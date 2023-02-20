@@ -1,6 +1,6 @@
 import book from "../models/book.js";
 
-/////////// find existing books/////////////////
+/////////// get all existing books/////////////////
 export const getAllbooks = async (req, res) => {
     try {
         const foundBooks = await book.find({});
@@ -21,10 +21,11 @@ export const getAllbooks = async (req, res) => {
 export const getSingleBook = async (req, res) => {
     const getSingleBook = req.params.title
     try {
-        await book.findOne({ title: getSingleBook })
+       const foundBook = await book.findOne({title: getSingleBook})
         res.status(200).json({
             success: true,
-            message: "book found"
+            message: "book found",
+            data: [getSingleBook, foundBook]
         })
     } catch (error) {
         res.status(404).json({
@@ -33,6 +34,8 @@ export const getSingleBook = async (req, res) => {
         })
     }
 }
+
+
 
 //////////////create new book///////////////////
 export const createBook = async (req, res) => {
@@ -83,5 +86,25 @@ export const deleteOneBook = async (req, res) => {
             success: false,
             message: "cannot delete the book"
         })
+    }
+}
+
+///////////update a book from the store////////////
+export const updateBook = async (req, res) => {
+    const updateBook = req.params.title
+    try {
+        await book.findOneAndUpdate({title: updateBook},
+            {$set: req.body},
+            {new: true});
+            res.status(200).json({
+                success: true,
+                message: "successfully update data",
+                data: req.body
+            })
+    } catch (error) {
+        res.status(200).json({
+             success: false,
+        message: " cannot update data"
+        });
     }
 }
