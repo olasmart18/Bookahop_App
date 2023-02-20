@@ -17,6 +17,23 @@ export const getAllbooks = async (req, res) => {
     }
 }
 
+////////////// get a single book ///////////////
+export const getSingleBook = async (req, res) => {
+    const getSingleBook = req.params.title
+    try {
+        await book.findOne({ title: getSingleBook })
+        res.status(200).json({
+            success: true,
+            message: "book found"
+        })
+    } catch (error) {
+        res.status(404).json({
+            success: false,
+            message: " no book with this title was found"
+        })
+    }
+}
+
 //////////////create new book///////////////////
 export const createBook = async (req, res) => {
     const newBook = new book(req.body)
@@ -41,7 +58,7 @@ export const deleteAllBooks = async (req, res) => {
     try {
         await deleteAll;
         res.status(200).json({
-            success:true,
+            success: true,
             message: "all books deleted"
         })
     } catch (error) {
@@ -56,7 +73,7 @@ export const deleteAllBooks = async (req, res) => {
 export const deleteOneBook = async (req, res) => {
     const title = req.params.title;
     try {
-        await book.findOneAndDelete({title: title});
+        await book.findOneAndDelete({ title: title });
         res.status(200).json({
             success: true,
             message: "book has been deleted successfully"
