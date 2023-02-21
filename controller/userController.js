@@ -4,6 +4,9 @@ import user from "../models/users.js"
 export const getAllUser = async (req, res) => {
     try {
         const users = await user.find({})
+        if(users.length === 0){
+            res.status(200).send("no user found");
+        }
         res.status(200).json({
             success: true,
             message: "Users found",
@@ -41,7 +44,7 @@ export const createNewUser = async (req, res) => {
 
     try {
         const saveNewUser = await newReg.save();
-        return res.status(200).json({
+         res.status(200).json({
             success: true,
             message: "successfully",
             data: saveNewUser
@@ -57,6 +60,7 @@ export const createNewUser = async (req, res) => {
 
 //////// update users //////////
 export const updateUser = async (req, res) => {
+    const id = req.params.id;
     try {
         const updateOne = await user.findByIdAndUpdate(id,
             { $set: req.body },
@@ -76,10 +80,33 @@ export const updateUser = async (req, res) => {
 
 /////////// delete users /////////////
 export const deleteUsers = async (req, res) => {
-
+    try {
+        await user.deleteMany({});
+        res.status(200).json({
+            success: true,
+            message: "all user deleted"
+        })
+    } catch (error) {
+        res.status(401).json({
+            success: false,
+            message: "failed, please try again"
+        })
+    }
 }
 
 ////////// delete single user ////////////////
 export const deleteSingleUser = async (req, res) => {
-
+    const id = req.params.id;
+    try {
+        await user.findByIdAndDelete(id)
+        res.status(200).json({
+            success: true,
+            message: "user deleted"
+        })
+    } catch (error) {
+        res.status(401).json({
+            success: false,
+            message: "failed, please try again"
+        })
+    }
 }
