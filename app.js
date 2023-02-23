@@ -3,6 +3,7 @@ import dotenv from "dotenv";
 import connect from "./config/database.js"
 import routes from "./router/bookRoute.js"
 import router from "./router/userRouter.js";
+import authRouter from "./router/authRouter.js";
 import { json } from "express";
 
 dotenv.config();
@@ -13,6 +14,7 @@ app.use(json())
 
 app.use("/book", routes);
 app.use("/user", router);
+app.use("/auth", authRouter)
 
 connect();
 
