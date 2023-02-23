@@ -18,6 +18,7 @@ app.use("/auth", authRouter)
 
 connect();
 
+// test route
 app.get("/test", (req, res)=> {
     res.status(200).json({
         success: true,
